@@ -6,13 +6,16 @@ use Symfony\Component\HttpClient\HttpClient;
 
 // Cria uma nova instância do cliente Goutte
 
-$nomeUsuario = 'cristianopimenta';
+
+
+$nomeUsuario = $_REQUEST["nome"];
 
 
 $client = new Client();
 
 // Define o URL do perfil do GitHub que deseja raspar
 $url = 'https://github.com/' . $nomeUsuario;
+$iUsuario = '';
 
 // Faz uma solicitação GET para o URL e armazena a resposta em uma variável
 $crawler = $client->request('GET', $url);
@@ -36,8 +39,35 @@ echo 'Número de seguidores: ' . $followers . "\n";
 $following = $crawler->filter('a.Link--secondary.no-underline.no-wrap[href="https://github.com/'. $nomeUsuario .'?tab=following"]')->text();
 echo 'Número de pessoas seguindo: ' . $following . "\n";
 
-//$imagem = $crawler->filter('img.avatar.avatar-user.width-full.border.color-bg-default[src="https://avatars.githubusercontent.com/u/36493435?v=4"]')->text();
-//echo 'Url Imagem: ' . $imagem . "\n";
+/*$stars = $crawler->filter('a[href$="/stargazers"]')->text();
+echo "O usuário " . $nomeusuario . " tem " . $stars . " estrelas."
+
+$star_element = $crawler->filter('.js-social-count');
+$star_count = trim($star_element->text());
+
+echo "O usuário " . $nomeUsuario . " tem " . $star_count . " estrelas. \n";
+
+este nao consegui resolver ainda.
+
+
+*/
+
+
+$image_element = $crawler->filter('img.avatar-user');
+$image_url = $image_element->attr('src');
+
+$contributions_element = $crawler->filter('.js-calendar-graph-svg > g:last-child rect');
+$contributions = $contributions_element->count();
+
+
+echo "O usuário " . $nomeUsuario . " tem " . $contributions . " contribuições \n";
+
+echo "A URL da imagem do perfil do usuário " . $nomeUsuario . " é: " . $image_url . "\n"; 
+
+
+
+
+
 
 
 
